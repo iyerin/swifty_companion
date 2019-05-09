@@ -11,9 +11,14 @@ import UIKit
 class ViewController: UIViewController {
 
     var myToken: String = ""
+    
     struct User {
         var login: String
+        var email: String
+        var mobile: String
+        var photo: String
     }
+    
     func getToken() {
         let url = ("https://api.intra.42.fr/oauth/token").addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)
         let escapedUrl = URL(string: url!)
