@@ -24,7 +24,7 @@
                                 <state key="normal" title="Button"/>
                                 <connections>
                                     <action selector="serchButton:" destination="kS0-mK-eFD" eventType="touchUpInside" id="aeG-Ie-zgh"/>
-                                    <segue destination="BYZ-38-t0r" kind="show" id="Hcs-vO-92U"/>
+                                    <segue destination="BYZ-38-t0r" kind="show" id="i5i-Fc-XyJ"/>
                                 </connections>
                             </button>
                             <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Wzs-ed-cSS">
