@@ -24,7 +24,6 @@
                                 <state key="normal" title="Button"/>
                                 <connections>
                                     <action selector="serchButton:" destination="kS0-mK-eFD" eventType="touchUpInside" id="aeG-Ie-zgh"/>
-                                    <segue destination="BYZ-38-t0r" kind="show" id="i5i-Fc-XyJ"/>
                                 </connections>
                             </button>
                             <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Wzs-ed-cSS">
@@ -34,12 +33,18 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="oBs-P4-rW0">
+                                <rect key="frame" x="177" y="377" width="20" height="20"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="m70-hx-C4M"/>
                     </view>
                     <connections>
+                        <outlet property="activity" destination="oBs-P4-rW0" id="Q0E-OC-j3U"/>
                         <outlet property="loginLabel" destination="Wzs-ed-cSS" id="Fm1-AD-RED"/>
+                        <segue destination="BYZ-38-t0r" kind="show" identifier="ToUser" id="3H6-Wy-rDe"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XKb-er-sq2" userLabel="First Responder" sceneMemberID="firstResponder"/>
