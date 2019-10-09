@@ -8,10 +8,17 @@
 
 import UIKit
 
+
+/*
+TODO
+ - unexisting user
+ - project marks/ lo & pprivalo
+ */
 class ViewController: UIViewController {
     
     var myUser = UserData.shared.myUser
     
+    @IBOutlet weak var background: UIImageView!
     @IBAction func serchButton(_ sender: UIButton) {
         if let login = loginLabel.text {
             UserData.shared.myUser.login = login
@@ -32,6 +39,12 @@ class ViewController: UIViewController {
         request.httpBody = postStr.data(using: String.Encoding.utf8)
         let task = URLSession.shared.dataTask(with: request as URLRequest) {
             (data, response, error) in
+            if let res = response as? HTTPURLResponse {
+                if res.statusCode != 200 {
+                    print("Wrong status code: ", res.statusCode)
+                    return
+                }
+            }
             if let err = error {
                 print("Error: ", err)
             }
@@ -40,6 +53,9 @@ class ViewController: UIViewController {
                     if let json = try JSONSerialization.jsonObject(with: d) as? [String: Any] {
                         //print("auth: ", json)
                         UserData.shared.token = (json["access_token"] as! String?)!
+                        print (UserData.shared.token)
+                        UserData.shared.myUser.arrProjects = []
+                         //   User(name: "", photo: "", level: 0, login: "", wallet: "", test: [], projects: [], projectsS: [[:]], arrProjects: [])
                         let url = ("https://api.intra.42.fr/v2/users/" + UserData.shared.myUser.login).addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)
                         let escapedUrl = URL(string: url!)
                         var request = URLRequest(url: escapedUrl! as URL)
@@ -48,8 +64,12 @@ class ViewController: UIViewController {
                         
                         let task = URLSession.shared.dataTask(with: request as URLRequest) {
                             (data, response, error) in
-                            if (response as? HTTPURLResponse) != nil {
-                                //print(res)
+                            if let res = response as? HTTPURLResponse {
+                                if res.statusCode != 200 {
+                                    print("Wrong status code: ", res.statusCode)
+                                    return
+                                    
+                                }
                             }
                             if let err = error {
                                 print("Error: ", err)
@@ -57,33 +77,83 @@ class ViewController: UIViewController {
                             else if let d = data {
                                 do {
                                     let json = try JSONSerialization.jsonObject(with: d) as! [String: Any]
-                                   // print(json)
-                                    print("tyt")
-                                    
                                     if let photo = json["image_url"] {
                                         UserData.shared.myUser.photo = photo as! String
                                     }
                                     if let name = json["displayname"] {
                                         UserData.shared.myUser.name = name as! String
                                     }
+                                    if let wallet = json["wallet"] {
+                                        UserData.shared.myUser.wallet = "\(wallet)"
+                                    }
                                     let cursus = json["cursus_users"] as! [[String: Any]]
-                                    print("cursus = ", cursus)
                                     
                                     if let level = cursus.first!["level"] {
-                                        UserData.shared.myUser.level = String(format: "%@", level as! CVarArg)
-                                        print("level = ", level)
+                                        let levelDouble = level as! Double
+                                        UserData.shared.myUser.level = levelDouble
+                                        
                                     }
-                                    //print(level)
-//                                        if let level = cursus["level"] {
-//                                            UserData.shared.myUser.name = level as! String
-//                                        }
-                                    
 
-                                    print(UserData.shared.myUser)
+                                    let skills = cursus.first!["skills"] as! [NSDictionary]
+                                    UserData.shared.myUser.test = skills
+                                    
+                                    let projects = json["projects_users"] as! [[String: Any]]
+                                    
+                                    for project in projects {
+                                        let cursusID = project["cursus_ids"] as! [NSNumber]
+                                        let myId = cursusID.first!
+                                        
+                                        let projectDetails = project["project"] as! [String:Any]
+                                        
+                                        let parentID: NSNumber
+                                        if (projectDetails["parent_id"] is NSNull) {
+                                            parentID = 0
+                                        }
+                                        else {
+                                            parentID = projectDetails["parent_id"] as! NSNumber
+                                        }
+                                        
+                                        let name = projectDetails["name"] as! String
+
+                                        let finished: Bool
+                                        if project["status"] as! String == "finished" {
+                                            finished = true
+                                        } else {
+                                            finished = false
+                                        }
+                                        
+                                        let mark: Int
+                                        if (project["final_mark"] is NSNull) {
+                                            mark = 0
+                                        }
+                                        else {
+                                            mark = (project["final_mark"] as! NSNumber).intValue
+                                        }
+                                        
+                                        let validated: Bool
+                                        if (project["validated?"] is NSNull) {
+                                            validated = false
+                                        }
+                                        else {
+                                            validated = project["validated?"] as! Bool
+                                        }
+                                        
+                                        if ((myId == 1) && (parentID == 0)) && (finished == true){
+                                            let newProject = Project(name: name, mark: mark, finished: finished, validated: validated)
+                                            UserData.shared.myUser.arrProjects.append(newProject)
+                                            print (newProject)
+                                        }
+                                        
+                                    }
+
+                                    UserData.shared.myUser.projectsS = projects
+
                                     DispatchQueue.main.async {
                                         self.performSegue(withIdentifier: "ToUser", sender: self)
+                                        self.activity.stopAnimating()
+                                        self.activity.isHidden = true
                                     }
-                                }
+                                } 
                                 catch (let err) {
                                     print("Err: ", err)
                                 }
