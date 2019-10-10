@@ -219,7 +219,7 @@
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="RxZ-TO-gol">
-                                <rect key="frame" x="0.0" y="269" width="375" height="398"/>
+                                <rect key="frame" x="0.0" y="314" width="375" height="353"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="myCell" rowHeight="90" id="jxw-2R-wJY" customClass="SkillsTableViewCell" customModule="swifty_companion" customModuleProvider="target">
@@ -278,15 +278,27 @@
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="0Ds-Wf-fob"/>
                                 </connections>
                             </tableView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Skills" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iPV-sZ-Tpy">
+                                <rect key="frame" x="0.0" y="264" width="375" height="45"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="45" id="CZL-uw-IH3"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="18"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="RxZ-TO-gol" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="C9n-ea-gqc"/>
                             <constraint firstItem="RxZ-TO-gol" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="EMk-St-WbI"/>
-                            <constraint firstItem="RxZ-TO-gol" firstAttribute="top" secondItem="brO-ww-9XK" secondAttribute="bottom" constant="5" id="FOw-C8-asZ"/>
+                            <constraint firstItem="iPV-sZ-Tpy" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="Kdz-Pf-a8G"/>
                             <constraint firstItem="brO-ww-9XK" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="M7I-2X-iIA"/>
+                            <constraint firstItem="RxZ-TO-gol" firstAttribute="top" secondItem="iPV-sZ-Tpy" secondAttribute="bottom" constant="5" id="e6J-Ny-fNH"/>
                             <constraint firstItem="brO-ww-9XK" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="fG8-lF-pVD"/>
                             <constraint firstAttribute="bottom" secondItem="RxZ-TO-gol" secondAttribute="bottom" id="ffn-ay-Ad7"/>
+                            <constraint firstItem="iPV-sZ-Tpy" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="kCb-k0-7Hj"/>
+                            <constraint firstItem="iPV-sZ-Tpy" firstAttribute="top" secondItem="brO-ww-9XK" secondAttribute="bottom" id="nAF-Iy-VQG"/>
                             <constraint firstItem="brO-ww-9XK" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="tQj-BL-PrO"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>

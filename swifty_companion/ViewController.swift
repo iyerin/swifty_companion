@@ -11,9 +11,9 @@ import UIKit
 
 /*
 TODO
- - unexisting user
- - project marks/ lo & pprivalo
+ - float cast
  */
+
 class ViewController: UIViewController {
     
     var myUser = UserData.shared.myUser
@@ -22,6 +22,9 @@ class ViewController: UIViewController {
     @IBAction func serchButton(_ sender: UIButton) {
         if let login = loginLabel.text {
             UserData.shared.myUser.login = login
+            if login == "" {
+                return
+            }
             getToken()
             activity.isHidden = false
             activity.startAnimating()
@@ -51,11 +54,9 @@ class ViewController: UIViewController {
             else if let d = data {
                 do {
                     if let json = try JSONSerialization.jsonObject(with: d) as? [String: Any] {
-                        //print("auth: ", json)
                         UserData.shared.token = (json["access_token"] as! String?)!
-                        print (UserData.shared.token)
+                       // print (UserData.shared.token)
                         UserData.shared.myUser.arrProjects = []
-                         //   User(name: "", photo: "", level: 0, login: "", wallet: "", test: [], projects: [], projectsS: [[:]], arrProjects: [])
                         let url = ("https://api.intra.42.fr/v2/users/" + UserData.shared.myUser.login).addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)
                         let escapedUrl = URL(string: url!)
                         var request = URLRequest(url: escapedUrl! as URL)
@@ -67,6 +68,10 @@ class ViewController: UIViewController {
                             if let res = response as? HTTPURLResponse {
                                 if res.statusCode != 200 {
                                     print("Wrong status code: ", res.statusCode)
+                                    DispatchQueue.main.async {
+                                        self.activity.stopAnimating()
+                                        self.activity.isHidden = true
+                                    }
                                     return
                                     
                                 }
@@ -76,7 +81,9 @@ class ViewController: UIViewController {
                             }
                             else if let d = data {
                                 do {
-                                    let json = try JSONSerialization.jsonObject(with: d) as! [String: Any]
+                                    if let json = try JSONSerialization.jsonObject(with: d) as? [String: Any] {
+                                        
+                                    
                                     if let photo = json["image_url"] {
                                         UserData.shared.myUser.photo = photo as! String
                                     }
@@ -141,9 +148,10 @@ class ViewController: UIViewController {
                                         if ((myId == 1) && (parentID == 0)) && (finished == true){
                                             let newProject = Project(name: name, mark: mark, finished: finished, validated: validated)
                                             UserData.shared.myUser.arrProjects.append(newProject)
-                                            print (newProject)
+                                           // print (newProject)
                                         }
                                         
+                                    
                                     }
 
                                     UserData.shared.myUser.projectsS = projects
@@ -152,6 +160,7 @@ class ViewController: UIViewController {
                                         self.performSegue(withIdentifier: "ToUser", sender: self)
                                         self.activity.stopAnimating()
                                         self.activity.isHidden = true
+                                    }
                                     }
                                 } 
                                 catch (let err) {

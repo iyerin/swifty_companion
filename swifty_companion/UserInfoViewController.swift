@@ -20,7 +20,6 @@ class UserInfoViewController: UIViewController, UITableViewDelegate, UITableView
     @IBOutlet weak var projectsButton: UIButton!
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        //print("===== skills====", UserData.shared.myUser.test.count)
         return(UserData.shared.myUser.test.count)
     }
     
@@ -28,21 +27,15 @@ class UserInfoViewController: UIViewController, UITableViewDelegate, UITableView
         let cell = skillsTable.dequeueReusableCell(withIdentifier: "myCell") as! SkillsTableViewCell
         cell.skillName.text = UserData.shared.myUser.test[indexPath.row]["name"] as? String
         cell.skillLevel.text = "\(UserData.shared.myUser.test[indexPath.row]["level"]!)"
-        cell.skillProgress.progress = Float(UserData.shared.myUser.test[indexPath.row]["level"] as! Float)/21
+        if let level = UserData.shared.myUser.test[indexPath.row]["level"], let floatLvl = level as? Float {
+            cell.skillProgress.progress = floatLvl / 21
+        }
+//        cell.skillProgress.progress = Float(UserData.shared.myUser.test[indexPath.row]["level"] as! Float)/21
         cell.skillProgress.trackTintColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 0.5)
         cell.skillProgress.tintColor = UIColor(red: 0/255, green: 186/255, blue: 188/255, alpha: 1)
         cell.skillProgress.layer.cornerRadius = 3
         cell.skillProgress.clipsToBounds = true
         return cell
-    }
-    
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 50))
-        let label = UILabel(frame: CGRect(x: 5, y: 0, width: tableView.frame.size.width - 5, height: 50))
-        label.text = "Skills"
-        label.textAlignment = .center
-        view.addSubview(label)
-        return view
     }
     
     func cropToBounds(image: UIImage, width: Double, height: Double) -> UIImage {
@@ -94,6 +87,7 @@ class UserInfoViewController: UIViewController, UITableViewDelegate, UITableView
                 self.photo.clipsToBounds = true
             }
         }
+        
         self.skillsTable.sectionHeaderHeight = 50
         name.text = UserData.shared.myUser.name
         level.text = "\(UserData.shared.myUser.level)"
@@ -106,7 +100,5 @@ class UserInfoViewController: UIViewController, UITableViewDelegate, UITableView
         levelProgress.clipsToBounds = true
         projectsButton.layer.cornerRadius = 10
         projectsButton.clipsToBounds = true
-        
-        
     }
 }
